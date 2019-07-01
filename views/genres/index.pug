@@ -1,0 +1,25 @@
+extends ../layouts/main.pug
+block content
+  .container
+    header
+      h1= title
+
+    div
+      table.table.table-striped
+        thead
+          tr
+            th Name
+            
+        
+        tbody
+          each genre in genres
+            tr
+              td
+                a(href=`/genres/${genre.id}`)= genre.name
+              td
+                a(href=`/genres/${genre.id}/edit`) edit
+                = ` | `
+                form.destroy(action=`/genres/destroy`, method="POST", onsubmit='return confirm("Are you sure you wish to destroy this beautiful genre?")')
+                  input(type="hidden", name="id", value=`${genre.id}`)
+                  input.destroy(type="submit", value="destroy")
+          

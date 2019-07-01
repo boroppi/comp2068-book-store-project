@@ -19,8 +19,8 @@ form(action=(book ? `/books/update` : "/books"), method="POST")
   .form-group
     label Genre
     select.form-control(name="book[genre]", required)
-      each genre in ["SCI-FI", "DRAMA", "NOVEL", "ART", "HISTORY", "BIOGRAPHY", "POEM"]
-        option(value=genre, selected=(book && book.genre === genre ? true : false))= genre.toLowerCase()
+      each genre in genres
+        option(value=genre._id, selected=(book && book.genre.name === genre.name ? true : false))= genre.name.toLowerCase()
   
   .form-group
     button.btn.btn-dark(type="submit") Submit

@@ -1,12 +1,15 @@
 const Book = require("../models/book");
+const Genre = require("../models/genre");
 const mongoose = require("mongoose");
 
 exports.index = (req, res) => {
+  req.isAuthenticated();
+
   Book.find()
     .then(books => {
       res.render("books/index", {
         books: books,
-        title: "Archive"
+        title: "Books Archive"
       });
     })
     .catch(err => {
@@ -16,6 +19,8 @@ exports.index = (req, res) => {
 };
 
 exports.show = (req, res) => {
+  req.isAuthenticated();
+
   Book.findById(req.params.id)
     .then(book => {
       res.render("books/show", {
@@ -30,9 +35,19 @@ exports.show = (req, res) => {
 };
 
 exports.new = (req, res) => {
-  res.render("books/new", {
-    title: `New Book`
-  });
+  req.isAuthenticated();
+
+  Genre.find()
+    .then(genres => {
+      res.render("books/new", {
+        title: `New Book`,
+        genres: genres
+      });
+    })
+    .catch(err => {
+      req.flash("error", `ERROR: ${err}`);
+      res.redirect("/");
+    });
 };
 
 exports.edit = (req, res) => {

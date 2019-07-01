@@ -1,0 +1,10 @@
+form(action=(genre ? `/genres/update` : "/genres"), method="POST")
+  if genre
+    input(type="hidden", name="id", value=genre.id)
+
+  .form-group
+    label Name
+    input.form-control(name="genre[name]", required, value=(genre ? genre.name : null))
+  
+  .form-group
+    button.btn.btn-dark(type="submit") Submit

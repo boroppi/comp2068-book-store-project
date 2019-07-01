@@ -26,3 +26,17 @@ h1.title {
 .flash {
   margin-top: 60px;
 }
+
+.nav-destroy > input[type="submit"] {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: rgba(255, 255, 255, 0.5);
+  display: block;
+  padding: 0.5rem 0.5rem;
+}
+
+.nav-destroy:hover > input[type="submit"] {
+  color: rgba(255, 255, 255, 0.7);
+}

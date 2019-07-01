@@ -17,9 +17,9 @@ const BookSchema = new mongoose.Schema(
       required: false
     },
     genre: {
-      type: String,
-      enum: ["SCI-FI", "DRAMA", "NOVEL", "ART", "HISTORY", "BIOGRAPHY", "POEM"],
-      default: "SCI-FI"
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Genre",
+      required: true
     }
   },
   {
@@ -28,4 +28,4 @@ const BookSchema = new mongoose.Schema(
 );
 
 // Exporting our resource model
-module.exports = mongoose.model("Book", BookSchema);
+module.exports = mongoose.model("Storebook", BookSchema);

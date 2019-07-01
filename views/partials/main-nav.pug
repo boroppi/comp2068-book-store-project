@@ -5,8 +5,24 @@ nav.navbar.fixed-top.navbar-expand-lg.navbar-dark.bg-dark
 
   #navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item.dropdown
-        a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Books
-        .dropdown-menu
-          a.dropdown-item(href='/books') Books
-          a.dropdown-item(href='/books/new') New Book
+      li.nav-item
+        a.nav-link(href='/') Home
+      if isAuthenticated
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Books
+          .dropdown-menu
+            a.dropdown-item(href='/books') Books
+            a.dropdown-item(href='/books/new') New Book
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', role='button', aria-haspopup='true', aria-expanded='false') Genres
+          .dropdown-menu
+            a.dropdown-item(href='/genres') Genres
+            a.dropdown-item(href='/genres/new') New Genre
+        li.nav-item
+          form.nav-destroy(action='/logout', method='POST')
+            input.destroy(type='submit', value='Logout')
+      if !isAuthenticated
+        li.nav-item
+          a.nav-link(href='/users/new') Register
+        li.nav-item
+          a.nav-link(href='/login') Login

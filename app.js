@@ -13,20 +13,19 @@ mongoose
   })
   .catch(err => console.error(`ERROR: ${err}`));
 
-// Our imported libraries
 const express = require("express");
+const path = require("path");
 
-// Assigning Express to an app contstant
 const app = express();
 
-// Adding cookie and session support to our application
+// Adding cookies and sessions support to our app
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const flash = require("connect-flash");
 app.use(cookieParser());
 app.use(
   session({
-    secret: process.env.secret || "boorakacha",
+    secret: process.env.secret || "bookrakacha",
     cookie: {
       maxAge: 10800000
     },
@@ -36,7 +35,6 @@ app.use(
 );
 app.use(flash());
 app.use((req, res, next) => {
-  debugger;
   res.locals.flash = res.locals.flash || {};
   res.locals.flash.success = req.flash("success") || null;
   res.locals.flash.error = req.flash("error") || null;
@@ -44,10 +42,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// This maintains our home path
-const path = require("path");
-
-// Body parser which will make reading request bodies MUCH easier
+// Body Parser
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
 app.use(
@@ -55,17 +50,34 @@ app.use(
     extended: true
   })
 );
+// End Parser
 
-// Our Views
+// Our views path
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 app.use("/css", express.static("assets/styles"));
 app.use("/js", express.static("assets/javascripts"));
 app.use("/images", express.static("assets/images"));
 
+// Authentication helpers
+const isAuthenticated = req => {
+  return req.session && req.session.userId;
+};
+app.use((req, res, next) => {
+  req.isAuthenticated = () => {
+    if (!isAuthenticated(req)) {
+      req.flash("error", "You are not permitted to do this action.");
+      res.redirect("/");
+    }
+  };
+
+  res.locals.isAuthenticated = isAuthenticated(req);
+  next();
+});
+
 // Our routes
 const routes = require("./routes.js");
 app.use("/", routes);
 
-// Starting our server on port 4000
-app.listen(process.env.PORT || 4000, () => console.log("Listening on 4000"));
+const port = process.env.PORT || 4000;
+app.listen(port, () => console.log(`Listening on ${port}`));
