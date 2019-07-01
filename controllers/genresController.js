@@ -42,6 +42,7 @@ exports.new = (req, res) => {
 };
 
 exports.edit = (req, res) => {
+  req.isAuthenticated();
   Genre.findById(req.params.id)
     .then(genre => {
       res.render("genres/edit", {
@@ -56,6 +57,7 @@ exports.edit = (req, res) => {
 };
 
 exports.create = (req, res) => {
+  req.isAuthenticated();
   Genre.create(req.body.genre)
     .then(() => {
       req.flash("success", "New genre was created successfully.");
@@ -68,6 +70,7 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
+  req.isAuthenticated();
   Genre.updateOne(
     {
       _id: req.body.id
@@ -88,6 +91,7 @@ exports.update = (req, res) => {
 };
 
 exports.destroy = (req, res) => {
+  req.isAuthenticated();
   Genre.deleteOne({
     _id: req.body.id
   })
