@@ -6,6 +6,7 @@ exports.index = (req, res) => {
   req.isAuthenticated();
 
   Book.find()
+    .populate("genre")
     .then(books => {
       res.render("books/index", {
         books: books,
@@ -22,6 +23,7 @@ exports.show = (req, res) => {
   req.isAuthenticated();
 
   Book.findById(req.params.id)
+    .populate("genre")
     .then(book => {
       res.render("books/show", {
         book: book,
@@ -51,11 +53,16 @@ exports.new = (req, res) => {
 };
 
 exports.edit = (req, res) => {
+  req.isAuthenticated();
   Book.findById(req.params.id)
+    .populate("genre")
     .then(book => {
-      res.render("books/edit", {
-        title: `Edit ${book.title}`,
-        book: book
+      Genre.find().then(genres => {
+        res.render("books/edit", {
+          title: `Edit ${book.title}`,
+          book: book,
+          genres: genres
+        });
       });
     })
     .catch(err => {
@@ -65,6 +72,7 @@ exports.edit = (req, res) => {
 };
 
 exports.create = (req, res) => {
+  req.isAuthenticated();
   Book.create(req.body.book)
     .then(() => {
       req.flash("success", "New book was created successfully.");
@@ -77,6 +85,7 @@ exports.create = (req, res) => {
 };
 
 exports.update = (req, res) => {
+  req.isAuthenticated();
   Book.updateOne(
     {
       _id: req.body.id
@@ -97,6 +106,7 @@ exports.update = (req, res) => {
 };
 
 exports.destroy = (req, res) => {
+  req.isAuthenticated();
   Book.deleteOne({
     _id: req.body.id
   })
